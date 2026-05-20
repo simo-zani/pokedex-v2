@@ -1,0 +1,56 @@
+/* ── Retro theme (Game Boy) ── */
+:root[data-theme="retro"] {
+  --gb-lightest: #9BBC0F;
+  --gb-light: #8BAC0F;
+  --gb-dark: #306230;
+  --gb-darkest: #0F380F;
+
+  --gb-bg: var(--gb-lightest);
+  --gb-text: var(--gb-darkest);
+}
+
+/* ── Modern theme ── */
+:root[data-theme="modern"] {
+  --gb-lightest: #f8f9fa;
+  --gb-light: #e9ecef;
+  --gb-dark: #495057;
+  --gb-darkest: #212529;
+
+  --gb-bg: #ffffff;
+  --gb-text: var(--gb-darkest);
+}
+
+/* Sprite filter — retro only */
+:root[data-theme="retro"] .gb-sprite-filter {
+  image-rendering: pixelated;
+  filter: grayscale(1) contrast(1.3) brightness(1.1);
+  mix-blend-mode: multiply;
+}
+
+/* Scanlines — retro only */
+:root[data-theme="retro"] .gb-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.1) 0px,
+    rgba(0, 0, 0, 0.1) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+@media (min-resolution: 2dppx) {
+  :root[data-theme="retro"] .gb-screen::before {
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.1) 0px,
+      rgba(0, 0, 0, 0.1) 2px,
+      transparent 2px,
+      transparent 6px
+    );
+  }
+}
