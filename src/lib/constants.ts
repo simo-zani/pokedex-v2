@@ -18,12 +18,12 @@ export function formatPokemonNumber(id: number): string {
   return `#${String(id).padStart(3, "0")}`;
 }
 
-/** Get sprite URL for list display (avoids fetching detail) */
+/** Get sprite URL for list display */
 export function getListSpriteUrl(id: number): string {
   return `${SPRITE_BASE}/${id}.png`;
 }
 
-/** Get retro (Gen I gray) sprite URL for list display. Falls back to default for id > 151 */
+/** Get retro (Gen I gray) sprite URL. Falls back to default for id > 151 */
 export function getRetroListSpriteUrl(id: number): string {
   if (id <= 151) {
     return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/gray/${id}.png`;

@@ -7,14 +7,24 @@ import LoadingScreen from "../components/common/LoadingScreen";
 import ErrorMessage from "../components/common/ErrorMessage";
 import SpriteImage from "../components/common/SpriteImage";
 
-/* Pokémon type → color for modern mode */
+/* Pokémon type → Tailwind bg class for badges */
 const TYPE_COLORS: Record<string, string> = {
   normal: "bg-gray-400", fire: "bg-orange-500", water: "bg-blue-500",
   electric: "bg-yellow-400", grass: "bg-green-500", ice: "bg-cyan-300",
   fighting: "bg-red-700", poison: "bg-purple-500", ground: "bg-amber-600",
   flying: "bg-indigo-300", psychic: "bg-pink-500", bug: "bg-lime-500",
   rock: "bg-yellow-700", ghost: "bg-purple-700", dragon: "bg-indigo-600",
-  dark: "bg-gray-700", steel: "bg-gray-400", fairy: "bg-pink-300",
+  dark: "bg-gray-700", steel: "bg-slate-400", fairy: "bg-pink-300",
+};
+
+/* Pokémon type → hex for background tint gradient */
+const TYPE_HEX: Record<string, string> = {
+  normal: "#A8A77A", fire: "#f97316", water: "#3b82f6",
+  electric: "#facc15", grass: "#22c55e", ice: "#67e8f9",
+  fighting: "#b91c1c", poison: "#a855f7", ground: "#d97706",
+  flying: "#a5b4fc", psychic: "#ec4899", bug: "#84cc16",
+  rock: "#a16207", ghost: "#7e22ce", dragon: "#4f46e5",
+  dark: "#374151", steel: "#94a3b8", fairy: "#f9a8d4",
 };
 
 const STAT_COLORS: Record<string, string> = {
@@ -58,10 +68,20 @@ export default function PokemonPage() {
   const englishName =
     species?.names.find((n) => n.language.name === "en")?.name ?? pokemon.name;
 
+  // Tinted background for modern mode based on primary type
+  const primaryType = pokemon.types[0]?.type.name ?? "normal";
+  const typeHex = TYPE_HEX[primaryType] ?? "#9ca3af";
+  const modernBg = isRetro
+    ? undefined
+    : { background: `linear-gradient(135deg, ${typeHex}22 0%, #ffffff 55%)` };
+
   return (
-    <div className={`px-4 py-4 min-h-full transition-colors duration-500 ${
-      isRetro ? "bg-gb-bg" : "bg-white"
-    }`}>
+    <div
+      className={`px-4 py-4 min-h-full transition-colors duration-500 ${
+        isRetro ? "bg-gb-bg" : ""
+      }`}
+      style={modernBg}
+    >
       {/* Header */}
       <div className="relative text-center flex items-center justify-center">
         <button
@@ -69,7 +89,7 @@ export default function PokemonPage() {
           className={`absolute left-0 p-1 rounded transition-colors ${
             isRetro
               ? "text-gb-darkest hover:bg-gb-light"
-              : "text-gray-600 hover:bg-gray-100"
+              : "text-gray-600 hover:bg-white/60"
           }`}
           title="Torna alla lista"
         >
@@ -80,29 +100,29 @@ export default function PokemonPage() {
         <div>
           <p className={isRetro
             ? "text-[8px] text-gb-dark font-retro"
-            : "text-xs text-gray-400 font-medium"
+            : "text-sm text-gray-400 font-modern"
           }>
             {formatPokemonNumber(pokemon.id)}
           </p>
           <h1 className={`capitalize mt-1 leading-tight ${
             isRetro
               ? "text-[12px] font-retro text-gb-darkest"
-              : "text-xl font-bold text-gray-900"
+              : "text-2xl font-bold text-gray-900 font-modern"
           }`}>{englishName}</h1>
         </div>
       </div>
 
       {/* Sprite */}
       <div className={`flex justify-center my-4 mx-auto ${
-        isRetro ? "p-2 w-32 h-32" : "p-4 w-40 h-40"
+        isRetro ? "p-2 w-32 h-32" : "p-4 w-44 h-44"
       }`}>
         <SpriteImage
           pokemonId={pokemon.id}
           sprites={pokemon.sprites}
           alt={englishName}
-          width={isRetro ? 96 : 128}
-          height={isRetro ? 96 : 128}
-          className="w-full h-full object-contain"
+          width={isRetro ? 96 : 160}
+          height={isRetro ? 96 : 160}
+          className="w-full h-full object-contain drop-shadow-md"
         />
       </div>
 
@@ -114,7 +134,7 @@ export default function PokemonPage() {
             className={`px-2 py-0.5 capitalize ${
               isRetro
                 ? "border border-gb-dark text-[8px] font-retro text-gb-darkest"
-                : `${TYPE_COLORS[t.type.name] || "bg-gray-400"} text-white text-[11px] font-semibold rounded-full px-3 py-1`
+                : `${TYPE_COLORS[t.type.name] || "bg-gray-400"} text-white text-[13px] font-modern rounded-full px-3 py-1`
             }`}
           >
             {t.type.name}
@@ -126,7 +146,7 @@ export default function PokemonPage() {
       <div className={`flex justify-center gap-6 mb-4 ${
         isRetro
           ? "text-[8px] font-retro text-gb-dark"
-          : "text-sm text-gray-500"
+          : "text-base font-modern text-gray-500"
       }`}>
         <span>{isRetro ? "HT" : "Height"}: {(pokemon.height / 10).toFixed(1)}m</span>
         <span>{isRetro ? "WT" : "Weight"}: {(pokemon.weight / 10).toFixed(1)}kg</span>
@@ -137,7 +157,7 @@ export default function PokemonPage() {
         <h2 className={`mb-3 uppercase tracking-wider ${
           isRetro
             ? "text-[8px] font-retro text-gb-darkest"
-            : "text-xs font-semibold text-gray-700"
+            : "text-base font-modern text-gray-600"
         }`}>
           {isRetro ? "STATISTICHE" : "Stats"}
         </h2>
@@ -166,11 +186,11 @@ export default function PokemonPage() {
             const barColor = STAT_COLORS[s.stat.name] || "bg-gray-400";
             return (
               <div key={s.stat.name} className="flex items-center gap-2">
-                <span className="text-[11px] text-gray-500 w-12 text-right font-medium">{label}</span>
-                <span className="text-[11px] text-gray-800 w-8 text-right font-bold">{s.base_stat}</span>
+                <span className="text-[13px] font-modern text-gray-500 w-14 text-right">{label}</span>
+                <span className="text-[13px] font-modern text-gray-800 font-bold w-8 text-right">{s.base_stat}</span>
                 <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
                   <div
-                    className={`h-full rounded-full ${barColor} transition-all duration-500`}
+                    className={`h-full rounded-full ${barColor} transition-all duration-700`}
                     style={{ width: `${pct}%` }}
                   />
                 </div>

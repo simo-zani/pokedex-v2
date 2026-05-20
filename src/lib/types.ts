@@ -10,7 +10,7 @@ export interface PokemonListItem {
   url: string;
 }
 
-// === Detail endpoint types (minimal for Phase 1) ===
+// === Detail endpoint types ===
 
 export interface PokemonType {
   slot: number;
@@ -31,6 +31,16 @@ export interface PokemonStat {
 
 export interface PokemonSprites {
   front_default: string | null;
+  other?: {
+    "official-artwork"?: { front_default: string | null };
+    showdown?: { front_default: string | null };
+    home?: { front_default: string | null };
+  };
+  versions?: {
+    "generation-i"?: {
+      "red-blue"?: { front_gray: string | null };
+    };
+  };
 }
 
 export interface Pokemon {
@@ -43,7 +53,7 @@ export interface Pokemon {
   weight: number;
 }
 
-// === Species endpoint types (minimal) ===
+// === Species endpoint types ===
 
 export interface PokemonSpeciesName {
   language: { name: string; url: string };

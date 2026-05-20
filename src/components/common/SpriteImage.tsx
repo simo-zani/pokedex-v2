@@ -18,24 +18,32 @@ export default function SpriteImage({
   width,
   height,
 }: SpriteImageProps) {
-  const [error, setError] = useState(false);
+  const [errorCount, setErrorCount] = useState(0);
   const { isRetro } = useTheme();
 
-  // Determine which sprite to use
-  let src = "";
+  // Build ordered list of candidate URLs
+  const candidates: string[] = [];
 
   if (isRetro && pokemonId <= 151) {
-    // Retro: try Gen I gray sprite
-    const graySprite = sprites?.versions?.["generation-i"]?.["red-blue"]?.front_gray;
-    if (graySprite && !error) {
-      src = graySprite;
-    } else {
-      src = sprites?.front_default || "";
-    }
+    // Retro Gen I: gray sprite first, then default
+    const gray = sprites?.versions?.["generation-i"]?.["red-blue"]?.front_gray;
+    if (gray) candidates.push(gray);
+    if (sprites?.front_default) candidates.push(sprites.front_default);
+  } else if (!isRetro) {
+    // Modern: official artwork HD → showdown animated → home → default
+    const artwork = sprites?.other?.["official-artwork"]?.front_default;
+    const showdown = sprites?.other?.showdown?.front_default;
+    const home = sprites?.other?.home?.front_default;
+    if (artwork) candidates.push(artwork);
+    if (showdown) candidates.push(showdown);
+    if (home) candidates.push(home);
+    if (sprites?.front_default) candidates.push(sprites.front_default);
   } else {
-    // Modern or > 151: use default color sprite
-    src = sprites?.front_default || "";
+    // Retro > 151: just default
+    if (sprites?.front_default) candidates.push(sprites.front_default);
   }
+
+  const src = candidates[errorCount] ?? "";
 
   if (!src) {
     return (
@@ -57,8 +65,9 @@ export default function SpriteImage({
       width={width}
       height={height}
       loading="lazy"
-      onError={() => setError(true)}
+      onError={() => setErrorCount((c) => c + 1)}
       className={`${isRetro ? "gb-sprite-filter" : ""} ${className}`}
+      style={isRetro ? undefined : { imageRendering: "auto" }}
     />
   );
 }

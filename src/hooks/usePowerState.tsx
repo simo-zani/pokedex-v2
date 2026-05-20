@@ -12,14 +12,10 @@ const SESSION_BOOT_KEY = "pokedex_has_booted";
 
 interface PowerContextValue {
   isPowered: boolean;
-  /** Whether boot animation is currently playing */
   isBooting: boolean;
-  /** Whether shutdown animation is currently playing */
   isShuttingDown: boolean;
   togglePower: () => void;
-  /** Call when boot animation finishes */
   onBootComplete: () => void;
-  /** Call when shutdown animation finishes */
   onShutdownComplete: () => void;
 }
 
@@ -54,7 +50,6 @@ export function PowerProvider({ children }: { children: ReactNode }) {
   const storedPower = readStoredPower();
   const alreadyBooted = hasBootedThisSession();
 
-  // If stored as ON but hasn't booted this session → start OFF and trigger boot
   const [isPowered, setIsPowered] = useState(
     storedPower && !alreadyBooted ? false : storedPower
   );
@@ -63,12 +58,10 @@ export function PowerProvider({ children }: { children: ReactNode }) {
   );
   const [isShuttingDown, setIsShuttingDown] = useState(false);
 
-  // Persist power state
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(isPowered));
   }, [isPowered]);
 
-  // Auto-trigger boot on first mount if was stored as ON
   useEffect(() => {
     if (storedPower && !alreadyBooted) {
       setIsBooting(true);
@@ -88,13 +81,11 @@ export function PowerProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const togglePower = useCallback(() => {
-    if (isBooting || isShuttingDown) return; // prevent spam
+    if (isBooting || isShuttingDown) return;
 
     if (isPowered) {
-      // Start shutdown
       setIsShuttingDown(true);
     } else {
-      // Start boot
       setIsBooting(true);
     }
   }, [isPowered, isBooting, isShuttingDown]);

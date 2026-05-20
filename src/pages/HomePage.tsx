@@ -59,7 +59,6 @@ export default function HomePage() {
 
   return (
     <div className={`pb-4 transition-colors duration-500 ${isRetro ? "bg-gb-bg" : "bg-white"}`}>
-      {/* Counter */}
       <p className={`text-center pt-2 uppercase tracking-widest ${
         isRetro
           ? "text-[8px] text-gb-dark font-retro"

@@ -15,7 +15,7 @@ export default function PokedexShell({ children }: PokedexShellProps) {
   const { isRetro } = useTheme();
 
   return (
-    <div className="h-[100dvh] md:h-[100vh] bg-gray-200 flex items-center justify-center">
+    <div className="h-[100dvh] md:h-[100vh] overflow-hidden bg-gray-200 flex items-center justify-center">
       <div
         className={`
           w-full h-full flex flex-col overflow-hidden
@@ -26,8 +26,7 @@ export default function PokedexShell({ children }: PokedexShellProps) {
               ? `bg-[#8B8B8B]
                  md:shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_2px_0_rgba(255,255,255,0.15)]`
               : `bg-gradient-to-b from-[#DC0A2D] via-[#C50926] to-[#A3071F]
-                 md:shadow-[0_8px_40px_rgba(220,10,45,0.3),0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.15)]
-                 md:rounded-3xl`
+                 md:shadow-[0_8px_40px_rgba(220,10,45,0.3),0_2px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.15)]`
           }
         `}
       >

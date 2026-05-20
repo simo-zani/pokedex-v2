@@ -14,6 +14,7 @@ const config: Config = {
       },
       fontFamily: {
         retro: ['"Press Start 2P"', 'monospace'],
+        modern: ['"VT323"', 'monospace'],
       },
     },
   },

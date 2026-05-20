@@ -69,45 +69,35 @@ export default function ButtonBar() {
   const currentId = params.id ? parseInt(params.id, 10) : null;
 
   const canPrev = isDetail && currentId !== null && currentId > 1;
-  const canNext =
-    isDetail && currentId !== null && currentId < POKEMON_LIST_LIMIT;
+  const canNext = isDetail && currentId !== null && currentId < POKEMON_LIST_LIMIT;
 
   return (
-    <div
-      className={`
-        flex items-center justify-center gap-3 px-4 py-4
-        ${disabled ? "pointer-events-none" : ""}
-      `}
-    >
-      {/* Prev */}
+    <div className={`
+      flex items-center justify-center gap-3 px-4 py-4
+      ${disabled ? "pointer-events-none" : ""}
+    `}>
       <ShellButton
         label="◀"
         onClick={() => canPrev && navigate(`/pokemon/${currentId! - 1}`)}
         disabled={disabled || !canPrev}
         isRetro={isRetro}
       />
-
-      {/* Next */}
       <ShellButton
         label="▶"
         onClick={() => canNext && navigate(`/pokemon/${currentId! + 1}`)}
         disabled={disabled || !canNext}
         isRetro={isRetro}
       />
-
-      {/* Home */}
       <ShellButton
         label="⌂"
         sublabel="HOME"
         onClick={() => {
           navigate("/");
-          document.getElementById('screen-scroll-container')?.scrollTo({ top: 0, behavior: 'smooth' });
+          document.getElementById("screen-scroll-container")?.scrollTo({ top: 0, behavior: "smooth" });
         }}
         disabled={disabled}
         isRetro={isRetro}
       />
-
-      {/* Mode — switches theme */}
       <ShellButton
         label="⟳"
         sublabel="MODE"
@@ -115,8 +105,6 @@ export default function ButtonBar() {
         disabled={disabled}
         isRetro={isRetro}
       />
-
-      {/* Gen — placeholder */}
       <ShellButton label="G" sublabel="GEN" disabled={true} isRetro={isRetro} />
     </div>
   );

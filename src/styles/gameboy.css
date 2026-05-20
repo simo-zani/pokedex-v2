@@ -4,7 +4,6 @@
   --gb-light: #8BAC0F;
   --gb-dark: #306230;
   --gb-darkest: #0F380F;
-
   --gb-bg: var(--gb-lightest);
   --gb-text: var(--gb-darkest);
 }
@@ -15,7 +14,6 @@
   --gb-light: #e9ecef;
   --gb-dark: #495057;
   --gb-darkest: #212529;
-
   --gb-bg: #ffffff;
   --gb-text: var(--gb-darkest);
 }
@@ -53,4 +51,18 @@
       transparent 6px
     );
   }
+}
+
+/* ── CRT Glitch transition ── */
+@keyframes crtGlitch {
+  0%   { transform: scaleY(1);    filter: brightness(1); }
+  15%  { transform: scaleY(0.04); filter: brightness(4) saturate(0); }
+  30%  { transform: scaleY(1);    filter: brightness(0.4) hue-rotate(180deg); }
+  50%  { transform: scaleY(1.02) skewX(3deg); filter: brightness(2) saturate(2); }
+  70%  { transform: scaleY(0.98) skewX(-2deg); filter: brightness(1.3); }
+  100% { transform: scaleY(1);    filter: brightness(1); }
+}
+
+.crt-transition {
+  animation: crtGlitch 0.35s ease-out forwards;
 }

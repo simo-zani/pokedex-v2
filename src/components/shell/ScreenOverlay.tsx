@@ -11,14 +11,12 @@ export default function ScreenOverlay() {
   const bgDark = isRetro ? "#0F380F" : "#111827";
   const bgLight = isRetro ? "#9BBC0F" : "#ffffff";
 
-  // Boot timer
   useEffect(() => {
     if (!isBooting) return;
     const timer = setTimeout(onBootComplete, 900);
     return () => clearTimeout(timer);
   }, [isBooting, onBootComplete]);
 
-  // Shutdown timer
   useEffect(() => {
     if (!isShuttingDown) return;
     const timer = setTimeout(onShutdownComplete, 900);
@@ -60,7 +58,6 @@ export default function ScreenOverlay() {
             initial={{ scaleY: 1 }}
             animate={{ scaleY: 0 }}
             transition={{ duration: 0.5, delay: 0.2, ease: "easeIn" }}
-            //@ts-ignore
             style={{ transformOrigin: "center", backgroundColor: bgLight }}
           />
         </motion.div>

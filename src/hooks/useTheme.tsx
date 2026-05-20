@@ -4,6 +4,7 @@ import {
   useState,
   useCallback,
   useEffect,
+  useRef,
   type ReactNode,
 } from "react";
 
@@ -12,6 +13,7 @@ export type ThemeMode = "retro" | "modern";
 interface ThemeContextValue {
   theme: ThemeMode;
   isRetro: boolean;
+  isGlitching: boolean;
   toggleTheme: () => void;
 }
 
@@ -30,19 +32,30 @@ function readStoredTheme(): ThemeMode {
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<ThemeMode>(readStoredTheme);
+  const [isGlitching, setIsGlitching] = useState(false);
+  const glitchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Sync data-theme attribute on <html>
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem(STORAGE_KEY, theme);
   }, [theme]);
 
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => (prev === "retro" ? "modern" : "retro"));
-  }, []);
+    if (isGlitching) return;
+
+    if (glitchTimerRef.current) clearTimeout(glitchTimerRef.current);
+
+    setIsGlitching(true);
+    glitchTimerRef.current = setTimeout(() => {
+      setTheme((prev) => (prev === "retro" ? "modern" : "retro"));
+      glitchTimerRef.current = setTimeout(() => {
+        setIsGlitching(false);
+      }, 200);
+    }, 150);
+  }, [isGlitching]);
 
   return (
-    <ThemeContext.Provider value={{ theme, isRetro: theme === "retro", toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, isRetro: theme === "retro", isGlitching, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
