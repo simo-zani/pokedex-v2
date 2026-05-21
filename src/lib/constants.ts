@@ -115,3 +115,72 @@ export const GAME_VERSIONS_ORDERED: GameVersionKey[] = [
   "legends-arceus",
   "scarlet-violet",
 ];
+
+/** Maps GameVersion to PokeAPI version names used in flavor_text_entries */
+export function gameVersionToApiNames(gameVersion: string): string[] {
+  const map: Record<string, string[]> = {
+    "red-blue": ["red", "blue"],
+    yellow: ["yellow"],
+    gold: ["gold"],
+    silver: ["silver"],
+    crystal: ["crystal"],
+    "ruby-sapphire": ["ruby", "sapphire"],
+    emerald: ["emerald"],
+    "fire-red-leaf-green": ["firered", "leafgreen"],
+    "diamond-pearl": ["diamond", "pearl"],
+    platinum: ["platinum"],
+    "heart-gold-soul-silver": ["heartgold", "soulsilver"],
+    "black-white": ["black", "white"],
+    "black-2-white-2": ["black-2", "white-2"],
+    "x-y": ["x", "y"],
+    "omegaruby-alphasapphire": ["omega-ruby", "alpha-sapphire"],
+    "sun-moon": ["sun", "moon"],
+    "ultra-sun-ultra-moon": ["ultra-sun", "ultra-moon"],
+    "lets-go-pikachu-lets-go-eevee": ["lets-go-pikachu", "lets-go-eevee"],
+    "sword-shield": ["sword", "shield"],
+    "brilliant-diamond-shining-pearl": ["brilliant-diamond", "shining-pearl"],
+    "legends-arceus": ["legends-arceus"],
+    "scarlet-violet": ["scarlet", "violet"],
+  };
+  return map[gameVersion] ?? [];
+}
+
+/** Maps PokeAPI version name to GameVersion key */
+const apiNameToGameKey: Record<string, string> = {
+  "red": "red-blue", "blue": "red-blue",
+  "yellow": "yellow",
+  "gold": "gold", "silver": "silver",
+  "crystal": "crystal",
+  "ruby": "ruby-sapphire", "sapphire": "ruby-sapphire",
+  "emerald": "emerald",
+  "firered": "fire-red-leaf-green", "leafgreen": "fire-red-leaf-green",
+  "diamond": "diamond-pearl", "pearl": "diamond-pearl",
+  "platinum": "platinum",
+  "heartgold": "heart-gold-soul-silver", "soulsilver": "heart-gold-soul-silver",
+  "black": "black-white", "white": "black-white",
+  "black-2": "black-2-white-2", "white-2": "black-2-white-2",
+  "x": "x-y", "y": "x-y",
+  "omega-ruby": "omegaruby-alphasapphire", "alpha-sapphire": "omegaruby-alphasapphire",
+  "sun": "sun-moon", "moon": "sun-moon",
+  "ultra-sun": "ultra-sun-ultra-moon", "ultra-moon": "ultra-sun-ultra-moon",
+  "lets-go-pikachu": "lets-go-pikachu-lets-go-eevee", "lets-go-eevee": "lets-go-pikachu-lets-go-eevee",
+  "sword": "sword-shield", "shield": "sword-shield",
+  "brilliant-diamond": "brilliant-diamond-shining-pearl", "shining-pearl": "brilliant-diamond-shining-pearl",
+  "legends-arceus": "legends-arceus",
+  "scarlet": "scarlet-violet", "violet": "scarlet-violet",
+};
+
+/** Given species data and language, returns the available GameVersion keys that have flavor text entries */
+export function getAvailableFlavorGames(
+  species: { flavor_text_entries: Array<{ language: { name: string }; version: { name: string } }> },
+  language: string
+): string[] {
+  const keys = new Set<string>();
+  for (const entry of species.flavor_text_entries) {
+    if (entry.language.name === language) {
+      const gameKey = apiNameToGameKey[entry.version.name];
+      if (gameKey) keys.add(gameKey);
+    }
+  }
+  return GAME_VERSIONS_ORDERED.filter((g) => keys.has(g));
+}

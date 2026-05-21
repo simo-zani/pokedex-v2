@@ -233,10 +233,46 @@ export interface PokemonSpeciesName {
   name: string;
 }
 
+export interface FlavorTextEntry {
+  flavor_text: string;
+  language: { name: string; url: string };
+  version: { name: string; url: string };
+}
+
 export interface PokemonSpecies {
   id: number;
   name: string;
   names: PokemonSpeciesName[];
+  flavor_text_entries: FlavorTextEntry[];
+  evolution_chain: { url: string };
+}
+
+// === Evolution chain types ===
+
+export interface EvolutionChainResponse {
+  chain: EvolutionChainLink;
+}
+
+export interface EvolutionChainLink {
+  species: { name: string; url: string };
+  evolution_details: EvolutionDetail[];
+  evolves_to: EvolutionChainLink[];
+}
+
+export interface EvolutionDetail {
+  min_level: number | null;
+  trigger: { name: string; url: string };
+  item: { name: string; url: string } | null;
+  held_item: { name: string; url: string } | null;
+  known_move: { name: string; url: string } | null;
+  min_happiness: number | null;
+  time_of_day: string;
+  location: { name: string; url: string } | null;
+  min_affection: number | null;
+  gender: number | null;
+  relative_physical_stats: number | null;
+  needs_overworld_rain: boolean;
+  turn_upside_down: boolean;
 }
 
 // === Derived helpers ===

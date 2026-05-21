@@ -47,31 +47,31 @@ export interface GameInfo {
 
 type GenerationKey = `generation-i` | `generation-ii` | `generation-iii` | `generation-iv` | `generation-v` | `generation-vi` | `generation-vii` | `generation-viii` | `generation-ix`;
 
-const GAME_VERSION_LABELS: Record<GameVersion, string> = {
-  "red-blue": "Red/Blue",
-  yellow: "Yellow",
-  gold: "Gold",
-  silver: "Silver",
-  crystal: "Crystal",
-  "ruby-sapphire": "Ruby/Sapphire",
-  emerald: "Emerald",
-  "fire-red-leaf-green": "FireRed/LeafGreen",
-  "diamond-pearl": "Diamond/Pearl",
-  platinum: "Platinum",
+export const GAME_VERSION_LABELS: Record<GameVersion, string> = {
+  "red-blue": "Rosso/Blu",
+  yellow: "Giallo",
+  gold: "Oro",
+  silver: "Argento",
+  crystal: "Cristallo",
+  "ruby-sapphire": "Rubino/Zaffiro",
+  emerald: "Smeraldo",
+  "fire-red-leaf-green": "Rosso Fuoco/Verde Foglia",
+  "diamond-pearl": "Diamante/Perla",
+  platinum: "Platino",
   "heart-gold-soul-silver": "HeartGold/SoulSilver",
-  "black-white": "Black/White",
-  "black-2-white-2": "Black 2/White 2",
+  "black-white": "Nero/Bianco",
+  "black-2-white-2": "Nero 2/Bianco 2",
   "x-y": "X/Y",
-  "omegaruby-alphasapphire": "Omega Ruby/Alpha Sapphire",
-  "sun-moon": "Sun/Moon",
-  "ultra-sun-ultra-moon": "Ultra Sun/Ultra Moon",
+  "omegaruby-alphasapphire": "Rubino Omega/Zaffiro Alpha",
+  "sun-moon": "Sole/Luna",
+  "ultra-sun-ultra-moon": "Ultrasole/Ultraluna",
   "lets-go-pikachu-lets-go-eevee": "Let's Go Pikachu/Eevee",
-  "sword-shield": "Sword/Shield",
-  "brilliant-diamond-shining-pearl": "Brilliant Diamond/Shining Pearl",
-  "legends-arceus": "Legends: Arceus",
-  "scarlet-violet": "Scarlet/Violet",
+  "sword-shield": "Spada/Scudo",
+  "brilliant-diamond-shining-pearl": "Diamante Lucente/Perla Splendente",
+  "legends-arceus": "Leggende: Arceus",
+  "scarlet-violet": "Scarlatto/Violetto",
   "official-artwork": "Official Artwork",
-  showdown: "Showdown (animato)",
+  showdown: "Lotta (animato)",
   home: "Home",
   default: "Default",
 };
@@ -105,7 +105,7 @@ const GAME_VERSION_GENERATION: Record<GameVersion, number> = {
   default: 0,
 };
 
-function mapGameVersionToSpritePath(gameVersion: GameVersion): { gen: GenerationKey; game: string; type: string } | null {
+export function mapGameVersionToSpritePath(gameVersion: GameVersion): { gen: GenerationKey; game: string; type: string } | null {
   const map: Record<string, { gen: GenerationKey; game: string; type: string }> = {
     "red-blue": { gen: "generation-i", game: "red-blue", type: "gray" },
     yellow: { gen: "generation-i", game: "yellow", type: "gray" },
@@ -139,7 +139,8 @@ function buildVersionSpriteUrl(
   game: string,
   type: string,
   view: SpriteView,
-  shiny: boolean
+  shiny: boolean,
+  gender: SpriteGender
 ): string | null {
   const genData = pokemon.sprites.versions?.[gen];
   if (!genData) return null;
@@ -147,35 +148,26 @@ function buildVersionSpriteUrl(
   const gameData = (genData as any)[game];
   if (!gameData) return null;
 
-  let spriteUrl: string | null = null;
+  if (gender === "female") {
+    if (shiny) {
+      const femaleShiny = view === "front" ? (gameData as any).front_shiny_female : (gameData as any).back_shiny_female;
+      if (femaleShiny) return femaleShiny;
+    }
+    const female = view === "front" ? (gameData as any).front_female : (gameData as any).back_female;
+    if (female) return female;
+  }
 
   if (shiny) {
     if (view === "front") {
-      spriteUrl = (gameData as any).front_shiny ?? null;
-      if (!spriteUrl && type === "gray") {
-        spriteUrl = (gameData as any).front_gray ?? null;
-      }
-    } else {
-      spriteUrl = (gameData as any).back_shiny ?? null;
-      if (!spriteUrl && type === "gray") {
-        spriteUrl = (gameData as any).back_gray ?? null;
-      }
+      return (gameData as any).front_shiny ?? (type === "gray" ? (gameData as any).front_gray ?? null : null);
     }
-  } else {
-    if (view === "front") {
-      spriteUrl = (gameData as any).front_default ?? null;
-      if (!spriteUrl && type === "gray") {
-        spriteUrl = (gameData as any).front_gray ?? null;
-      }
-    } else {
-      spriteUrl = (gameData as any).back_default ?? null;
-      if (!spriteUrl && type === "gray") {
-        spriteUrl = (gameData as any).back_gray ?? null;
-      }
-    }
+    return (gameData as any).back_shiny ?? (type === "gray" ? (gameData as any).back_gray ?? null : null);
   }
 
-  return spriteUrl;
+  if (view === "front") {
+    return (gameData as any).front_default ?? (type === "gray" ? (gameData as any).front_gray ?? null : null);
+  }
+  return (gameData as any).back_default ?? (type === "gray" ? (gameData as any).back_gray ?? null : null);
 }
 
 export function getSpriteUrl(pokemon: Pokemon, options: SpriteOptions): string | null {
@@ -226,18 +218,39 @@ export function getSpriteUrl(pokemon: Pokemon, options: SpriteOptions): string |
   if (!pathInfo) return null;
 
   const { gen, game, type } = pathInfo;
-  const baseUrl = buildVersionSpriteUrl(pokemon, gen, game, type, view, shiny);
-
-  if (gender === "female" && view === "front") {
-    const femaleUrl = buildVersionSpriteUrl(pokemon, gen, game, type, view, shiny);
-    if (femaleUrl) return femaleUrl;
-  }
+  const baseUrl = buildVersionSpriteUrl(pokemon, gen, game, type, view, shiny, gender);
 
   return baseUrl;
 }
 
 export function hasGenderSprite(pokemon: Pokemon): boolean {
   return pokemon.sprites.front_female !== null;
+}
+
+export function hasGenderForGame(pokemon: Pokemon, gameVersion: GameVersion): boolean {
+  if (gameVersion === "default") {
+    return pokemon.sprites.front_female !== null;
+  }
+  if (gameVersion === "official-artwork" || gameVersion === "showdown" || gameVersion === "home") {
+    return false;
+  }
+  const pathInfo = mapGameVersionToSpritePath(gameVersion);
+  if (!pathInfo) return false;
+  const genData = pokemon.sprites.versions?.[pathInfo.gen] as any;
+  const gameData = genData?.[pathInfo.game];
+  return gameData?.front_female != null;
+}
+
+export function getPokemonGeneration(id: number): number {
+  if (id <= 151) return 1;
+  if (id <= 251) return 2;
+  if (id <= 386) return 3;
+  if (id <= 493) return 4;
+  if (id <= 649) return 5;
+  if (id <= 721) return 6;
+  if (id <= 809) return 7;
+  if (id <= 898) return 8;
+  return 9;
 }
 
 export function getDefaultRetroGame(id: number): GameVersion {
@@ -280,7 +293,12 @@ export function getAvailableGames(pokemon: Pokemon, mode: "retro" | "modern"): G
     { key: "scarlet-violet", gen: "generation-ix", gameKey: "scarlet-violet", label: GAME_VERSION_LABELS["scarlet-violet"] },
   ];
 
+  const pokemonGen = getPokemonGeneration(pokemon.id);
+
   for (const { key, gen, gameKey, label } of gameVersionMap) {
+    const gameGen = GAME_VERSION_GENERATION[key];
+    if (gameGen > 0 && gameGen < pokemonGen) continue;
+
     const genData = versions?.[gen] as any;
     const gameData = genData?.[gameKey];
 

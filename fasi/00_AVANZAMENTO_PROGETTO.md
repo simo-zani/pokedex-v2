@@ -39,6 +39,7 @@
 **Fase attiva**: `Fase 6 — Contenuti Dettaglio`
 **File da aprire**: `06_FASE_6_CONTENUTI_DETTAGLIO.md`
 **Note**: Fasi 1, 2, 3 e 4 completate il 20/05/2026. Fase 5 completata il 21/05/2026. Progetto su GitHub: https://github.com/simo-zani/pokedex-v2
+**Prossimo step**: Punto 5 della Fase 6 (Forme Alternative), poi Fase 7 e resto.
 
 ---
 
@@ -74,7 +75,7 @@
 - **20/05/2026**: Fase 3 completata — aggiunta tavolozza monocromatica Game Boy (CSS variables + config Tailwind), impostato font pixelato "Press Start 2P", caricamento e filtraggio sprite retro (Gen I gray per <=151, filtro CSS verde per >151), aggiunte scanlines ed effetto glow allo schermo, scocca Pokédex modificata in grigio (#8B8B8B), LED rosso e pulsanti squadrati a scatto, create visualizzazioni retro per statistiche e tipi.
 - **20/05/2026**: Repo GitHub: https://github.com/simo-zani/pokedex-v2
 - **20/05/2026**: Fase 5 iniziata — create utility sprites (`src/lib/sprites.ts`), costanti ordine giochi in `constants.ts`, componente SpriteViewer con front+back affiancati, shiny toggle (3 stelline), gender toggle, selettore gioco (solo moderna). Retro: sprite per generazione (come lista). Moderna: default Official Artwork.
-- **21/05/2026**: Fase 5 completata — Spostati i controlli (stelle shiny e genere) a destra degli sprite e sollevati rispetto al centro verticale; singola sparkle animation al centro; rimosso il box fisso dall'icona GameBoy di selezione gioco riducendone la misura (`w-5 h-5`) e allineandola perfettamente all'altezza del numero di Pokédex per evitare sovrapposizioni con il nome; rimosso il bordo nero intorno al contenitore degli sprite nella versione retro; risolti gli errori di compilazione TypeScript in `TransparentSprite.tsx`. Build finale eseguita con successo.
+- **21/05/2026**: Fase 6 — Completati punti 1 (lingue), 2 (stats), 3 (catena evolutiva), 6 (flavor text). Unificata colonna destra controlli (gameboy, flag, info, shiny, gender) con stato sollevato in PokemonPage. Tutti i pulsanti a 25×25px. Retro mode: cerchi rimossi da lingua e info, sprite catena evolutiva con filtro verde dedicato (`.gb-evo-filter`). Nomi oggetti evoluzione in italiano (Pietratuono, ecc.). Spessore tracce uniformato a 1.5px. Build funzionante. **Mancante**: punto 5 — Forme Alternative (Mega, Gmax, regionali).
 
 ---
 

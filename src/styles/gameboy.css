@@ -25,6 +25,12 @@
   mix-blend-mode: multiply;
 }
 
+/* Evolution chain sprite filter — applies green tint directly (no mix-blend-mode needed) */
+:root[data-theme="retro"] .gb-evo-filter {
+  image-rendering: pixelated;
+  filter: grayscale(1) brightness(0.65) sepia(0.6) hue-rotate(55deg) saturate(3) brightness(1.3);
+}
+
 /* Scanlines — retro only */
 :root[data-theme="retro"] .gb-screen::before {
   content: "";

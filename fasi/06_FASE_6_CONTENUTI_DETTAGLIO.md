@@ -10,13 +10,13 @@
 
 ### 🔤 Lingue e Nomi
 
-- [ ] **Hook `useLanguage`** (`src/hooks/useLanguage.ts`)
-  - [ ] Stato: `language: string` (es. `'it'`, `'en'`, `'ja-Hrkt'`)
-  - [ ] Default: `'it'`
-  - [ ] Persistere in `localStorage` (`pokedex_language`)
-  - [ ] Funzione `setLanguage(code)`
+- [x] **Hook `useLanguage`** (`src/hooks/useLanguage.ts`)
+  - [x] Stato: `language: string` (es. `'it'`, `'en'`, `'ja-Hrkt'`)
+  - [x] Default: `'it'`
+  - [x] Persistere in `localStorage` (`pokedex_language`)
+  - [x] Funzione `setLanguage(code)`
 
-- [ ] **Costanti lingue** (`src/lib/constants.ts`)
+- [x] **Costanti lingue** (`src/lib/constants.ts`)
   ```typescript
   export const LANGUAGES = [
     { code: "it", flag: "🇮🇹", label: "Italiano" },
@@ -32,61 +32,61 @@
   ];
   ```
 
-- [ ] **LanguageSelector** (`src/components/pokemon/LanguageSelector.tsx`)
-  - [ ] Pulsante bandierina nell'header del Pokémon
-  - [ ] Al tap: dropdown con tutte le bandiere
-  - [ ] Al cambio: aggiorna `language` globale → nome e flavor text si aggiornano
+- [x] **LanguageSelector** (`src/components/pokemon/LanguageSelector.tsx`)
+  - [x] Pulsante bandierina nell'header del Pokémon
+  - [x] Al tap: dropdown con tutte le bandiere
+  - [x] Al cambio: aggiorna `language` globale → nome e flavor text si aggiornano
 
-- [ ] **Funzione utility per nome localizzato**
-  - [ ] `getLocalizedName(species, language)` → cerca in `species.names[]` la entry con `language.name === language`, fallback su inglese, fallback ulteriore su `species.name`
+- [x] **Funzione utility per nome localizzato**
+  - [x] `getLocalizedName(species, language)` → cerca in `species.names[]` la entry con `language.name === language`, fallback su inglese, fallback ulteriore su `species.name`
 
 ### 📊 Statistiche Animate
 
-- [ ] **StatBar component** (`src/components/pokemon/StatBar.tsx`)
-  - [ ] Riceve: `label` (HP, Atk, ecc.), `value` (numerico, es. 80), `maxValue` (default 255)
-  - [ ] In modalità retro:
+- [x] **StatBar component** (`src/components/pokemon/StatBar.tsx`)
+  - [x] Riceve: `label` (HP, Atk, ecc.), `value` (numerico, es. 80), `maxValue` (default 255)
+  - [x] In modalità retro:
     - Barra a "blocchi": divisa in N segmenti (es. 16), riempiti proporzionalmente
     - Colore: verde scuro su sfondo verde chiaro
     - Animazione: i blocchi si riempiono uno per uno con stagger (a scatto, 50ms ciascuno)
-  - [ ] In modalità moderna:
+  - [x] In modalità moderna:
     - Barra continua con gradient rosso → giallo → verde
     - Animazione: width da 0 a `(value/maxValue)*100%` con Framer Motion `transition: { duration: 0.8, ease: "easeOut" }`
-  - [ ] Valore numerico mostrato a destra
-  - [ ] Label localizzata in italiano (HP, Atk, Dif, AtkSp, DifSp, Vel) — definire mapping
+  - [x] Valore numerico mostrato a destra
+  - [x] Label localizzata in italiano (HP, Atk, Dif, AtkSp, DifSp, Vel) — definire mapping
 
-- [ ] **StatsPanel** (`src/components/pokemon/StatsPanel.tsx`)
-  - [ ] Lista delle 6 stats (HP, Attack, Defense, Sp.Atk, Sp.Def, Speed)
-  - [ ] Totale stats in fondo
-  - [ ] Trigger animazione: ad ogni montaggio (quando si apre il Pokémon)
-  - [ ] Reset animazione al cambio Pokémon
+- [x] **StatsPanel** (`src/components/pokemon/StatsPanel.tsx`)
+  - [x] Lista delle 6 stats (HP, Attack, Defense, Sp.Atk, Sp.Def, Speed)
+  - [x] Totale stats in fondo
+  - [x] Trigger animazione: ad ogni montaggio (quando si apre il Pokémon)
+  - [x] Reset animazione al cambio Pokémon
 
 ### 🧬 Catena Evolutiva
 
-- [ ] **Hook `useEvolutionChain`** (`src/hooks/useEvolutionChain.ts`)
-  - [ ] Riceve l'URL della evolution_chain (da `species.evolution_chain.url`)
-  - [ ] Fetcha la chain
-  - [ ] React Query con cache permanente
+- [x] **Hook `useEvolutionChain`** (`src/hooks/useEvolutionChain.ts`)
+  - [x] Riceve l'URL della evolution_chain (da `species.evolution_chain.url`)
+  - [x] Fetcha la chain
+  - [x] React Query con cache permanente
 
-- [ ] **Utility parsing chain** (`src/lib/evolution.ts`)
-  - [ ] Funzione ricorsiva `parseEvolutionChain(chain)` → struttura piatta o ad albero
-  - [ ] Per ogni nodo: `{ speciesName, speciesId, evolutionDetails, children: [] }`
-  - [ ] `speciesId` estratto dall'URL della species
+- [x] **Utility parsing chain** (`src/lib/evolution.ts`)
+  - [x] Funzione ricorsiva `parseEvolutionChain(chain)` → struttura piatta o ad albero
+  - [x] Per ogni nodo: `{ speciesName, speciesId, evolutionDetails, children: [] }`
+  - [x] `speciesId` estratto dall'URL della species
 
-- [ ] **EvolutionChain component** (`src/components/pokemon/EvolutionChain.tsx`)
-  - [ ] Layout orizzontale: `[sprite] →cond→ [sprite] →cond→ [sprite]`
-  - [ ] Ogni sprite è cliccabile → naviga al dettaglio di quel Pokémon
-  - [ ] Mostra il nome (localizzato) sotto la sprite
-  - [ ] Per evoluzioni ramificate (Eevee → 8 forme): layout a griglia 2x4 o a ventaglio
-  - [ ] Se nessuna evoluzione: scritta "Questo Pokémon non si evolve"
+- [x] **EvolutionChain component** (`src/components/pokemon/EvolutionChain.tsx`)
+  - [x] Layout orizzontale: `[sprite] →cond→ [sprite] →cond→ [sprite]`
+  - [x] Ogni sprite è cliccabile → naviga al dettaglio di quel Pokémon
+  - [x] Mostra il nome (localizzato) sotto la sprite
+  - [x] Per evoluzioni ramificate (Eevee → 8 forme): layout a griglia 2x4 o a ventaglio
+  - [x] Se nessuna evoluzione: scritta "Questo Pokémon non si evolve" (modificato: non renderizzato nulla)
 
-- [ ] **EvolutionArrow component** (`src/components/pokemon/EvolutionArrow.tsx`)
-  - [ ] Freccia tra due stadi evolutivi
-  - [ ] Sopra la freccia: condizione visualizzata in base ai `evolution_details`
-  - [ ] Logica condizioni (vedi spec):
+- [x] **EvolutionArrow component** (`src/components/pokemon/EvolutionArrow.tsx`)
+  - [x] Freccia tra due stadi evolutivi
+  - [x] Sopra la freccia: condizione visualizzata in base ai `evolution_details`
+  - [x] Logica condizioni (vedi spec):
     | Trigger | Visualizzazione |
     |---------|----------------|
     | `level-up` + `min_level` | Badge "Lv. 16" |
-    | `use-item` + `item` | Sprite oggetto + nome |
+    | `use-item` + `item` | Sprite oggetto + nome (italiano) |
     | `trade` | Icona 🔄 / cavo link |
     | `trade` + `held_item` | Icona 🔄 + sprite oggetto |
     | `min_happiness` | ❤️ + "Felicità" |
@@ -96,9 +96,9 @@
     | `location` | 📍 + nome luogo |
     | Multipli | Combinati in colonna |
 
-- [ ] **Sprite oggetti evoluzione**
-  - [ ] URL pattern: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/{item-name}.png`
-  - [ ] L'`item.name` lo prendi da `evolution_details[].item.name` (es. `"fire-stone"`)
+- [x] **Sprite oggetti evoluzione**
+  - [x] URL pattern: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/{item-name}.png`
+  - [x] L'`item.name` lo prendi da `evolution_details[].item.name` (es. `"fire-stone"`)
 
 ### 🎭 Forme Alternative
 
@@ -118,24 +118,12 @@
 
 ### 📜 Flavor Text
 
-- [ ] **Hook `useGameVersion`** (`src/hooks/useGameVersion.ts`)
-  - [ ] Stato locale alla `PokemonPage`: `flavorGameVersion: string`
-  - [ ] Default:
-    - Retro mode → versione più vecchia disponibile nella lingua
-    - Moderna mode → versione più recente disponibile nella lingua
-  - [ ] Reset al cambio Pokémon, al cambio lingua, al cambio modalità
+- [x] Funzione `getFlavorTextEntry` — filtro per lingua + gioco, nessun fallback inglese
+- [x] **FlavorTextPopup** — modale con descrizione + label gioco sotto (non in grassetto), senza selettore gioco interno
+- [x] Pulsante "i" condizionale (visibile solo se esiste flavor text nella lingua selezionata)
+- [x] Reset al cambio lingua
 
-- [ ] **FlavorText component** (`src/components/pokemon/FlavorText.tsx`)
-  - [ ] Riceve `species` e `language` corrente
-  - [ ] Filtra `species.flavor_text_entries` per la lingua selezionata
-  - [ ] Estrae i giochi disponibili (dedup di `version.name`)
-  - [ ] Ordina cronologicamente con `GAME_VERSIONS_ORDERED`
-  - [ ] Dropdown sopra il testo per scegliere la versione
-  - [ ] Mostra il flavor text della versione selezionata
-  - [ ] Sostituire i caratteri di controllo (`\f`, `\n`, `\u000c`) con spazi
-  - [ ] Se NESSUNA entry nella lingua selezionata → fallback inglese con nota "(testo in inglese)"
-
-- [ ] **Reset al cambio lingua**: quando l'utente cambia bandierina, il flavor text e il dropdown gioco si aggiornano (nuova lista di giochi disponibili in quella lingua)
+> **Deviazioni dalla spec**: nessun selettore gioco dentro il popup (usa la game version dello sprite viewer). Nessun fallback inglese — pulsante "i" nascosto se non c'è testo in quella lingua.
 
 ---
 
@@ -149,9 +137,8 @@
 6. ✅ Tra ogni stadio evolutivo è visibile la condizione (livello, oggetto, scambio, ecc.)
 7. ✅ Per evoluzioni con oggetto: icona dell'oggetto visibile (es. Pietra Fuoco per Vulpix)
 8. ✅ Eevee mostra le 8 eeveelutions in layout a griglia/ventaglio
-9. ✅ Per i Pokémon con forme alternative (Charizard, Mewtwo, Kyogre, ecc.): tabs visibili
-10. ✅ Cliccando una tab di forma → sprite, tipi, stats si aggiornano
-11. ✅ Cliccando uno stadio della catena evolutiva si naviga al suo dettaglio
+9. ✅ Cliccando uno stadio della catena evolutiva si naviga al suo dettaglio
+10. ⬜ **FORME ALTERNATIVE** — `FormsPanel` con tabs per Mega/Gmax/regionali — **Prossimo step**
 
 ---
 
