@@ -12,6 +12,20 @@
 **Hosting**: Vercel (statico, free tier)
 **Repo**: GitHub
 **Pokémon totali**: ~1025 (tutte le generazioni)
+# 📊 Avanzamento Progetto Pokédex Webapp
+
+> **Istruzioni per Claude**: leggi PRIMA questo file per capire a che fase sono arrivato, POI apri il file della fase corrispondente (`01_FASE_1_FONDAMENTA.md`, `02_FASE_2_SHELL_E_POWER.md`, ecc.) e lavora SOLO su quella fase. Quando completiamo una fase, aggiorna lo stato qui sotto da `🔲 Da fare` a `✅ Completata` e indica la data.
+
+---
+
+## 🎯 Riepilogo Progetto
+
+**Nome**: Pokédex Webapp (v3)
+**Stack**: Vite + React 18 + TypeScript + Tailwind + React Router + TanStack Query + Framer Motion
+**Fonte dati**: PokéAPI (https://pokeapi.co/api/v2/)
+**Hosting**: Vercel (statico, free tier)
+**Repo**: GitHub
+**Pokémon totali**: ~1025 (tutte le generazioni)
 **Modalità visive**: Retro (Game Boy) + Moderna
 
 📄 **Spec completa di riferimento**: `POKEDEX_WEBAPP_SPEC.md`
@@ -22,9 +36,9 @@
 
 > **Aggiorna qui sotto la fase su cui stiamo lavorando.**
 
-**Fase attiva**: `Fase 5 — Sprite System Completo`
-**File da aprire**: `05_FASE_5_SPRITE_SYSTEM.md`
-**Note**: Fasi 1, 2 e 3 completate il 20/05/2026. Fase 4 completata il 20/05/2026. Progetto su GitHub: https://github.com/simo-zani/pokedex-v2
+**Fase attiva**: `Fase 6 — Contenuti Dettaglio`
+**File da aprire**: `06_FASE_6_CONTENUTI_DETTAGLIO.md`
+**Note**: Fasi 1, 2, 3 e 4 completate il 20/05/2026. Fase 5 completata il 21/05/2026. Progetto su GitHub: https://github.com/simo-zani/pokedex-v2
 
 ---
 
@@ -36,13 +50,11 @@
 | 2 | Shell e Power | `02_FASE_2_SHELL_E_POWER.md` | ✅ Completata | 20/05/2026 |
 | 3 | Modalità Retro | `03_FASE_3_MODALITA_RETRO.md` | ✅ Completata | 20/05/2026 |
 | 4 | Modalità Moderna + Switch | `04_FASE_4_MODALITA_MODERNA_E_SWITCH.md` | ✅ Completata | 20/05/2026 |
-| 5 | Sprite System Completo | `05_FASE_5_SPRITE_SYSTEM.md` | 🟡 In corso | — |
-| 6 | Contenuti Dettaglio | `06_FASE_6_CONTENUTI_DETTAGLIO.md` | 🔲 Da fare | — |
+| 5 | Sprite System Completo | `05_FASE_5_SPRITE_SYSTEM.md` | ✅ Completata | 21/05/2026 |
+| 6 | Contenuti Dettaglio | `06_FASE_6_CONTENUTI_DETTAGLIO.md` | 🟡 In corso | — |
 | 7 | Audio e Polish | `07_FASE_7_AUDIO_E_POLISH.md` | 🔲 Da fare | — |
 | 8 | Extra (opzionali) | `08_FASE_8_EXTRA.md` | 🔲 Da fare | — |
 | 9 | Deploy finale e QA | `09_FASE_9_DEPLOY_E_QA.md` | 🔲 Da fare | — |
-
-**Legenda stato**:
 - 🔲 Da fare
 - 🟡 In corso
 - ✅ Completata
@@ -62,6 +74,7 @@
 - **20/05/2026**: Fase 3 completata — aggiunta tavolozza monocromatica Game Boy (CSS variables + config Tailwind), impostato font pixelato "Press Start 2P", caricamento e filtraggio sprite retro (Gen I gray per <=151, filtro CSS verde per >151), aggiunte scanlines ed effetto glow allo schermo, scocca Pokédex modificata in grigio (#8B8B8B), LED rosso e pulsanti squadrati a scatto, create visualizzazioni retro per statistiche e tipi.
 - **20/05/2026**: Repo GitHub: https://github.com/simo-zani/pokedex-v2
 - **20/05/2026**: Fase 5 iniziata — create utility sprites (`src/lib/sprites.ts`), costanti ordine giochi in `constants.ts`, componente SpriteViewer con front+back affiancati, shiny toggle (3 stelline), gender toggle, selettore gioco (solo moderna). Retro: sprite per generazione (come lista). Moderna: default Official Artwork.
+- **21/05/2026**: Fase 5 completata — Spostati i controlli (stelle shiny e genere) a destra degli sprite e sollevati rispetto al centro verticale; singola sparkle animation al centro; rimosso il box fisso dall'icona GameBoy di selezione gioco riducendone la misura (`w-5 h-5`) e allineandola perfettamente all'altezza del numero di Pokédex per evitare sovrapposizioni con il nome; rimosso il bordo nero intorno al contenitore degli sprite nella versione retro; risolti gli errori di compilazione TypeScript in `TransparentSprite.tsx`. Build finale eseguita con successo.
 
 ---
 

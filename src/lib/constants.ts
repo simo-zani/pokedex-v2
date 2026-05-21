@@ -13,9 +13,9 @@ export function extractIdFromUrl(url: string): number {
   return parseInt(match[1], 10);
 }
 
-/** Format Pokémon number as #001 */
+/** Format Pokémon number as #0001 */
 export function formatPokemonNumber(id: number): string {
-  return `#${String(id).padStart(3, "0")}`;
+  return `#${String(id).padStart(4, "0")}`;
 }
 
 /** Get sprite URL for list display */
