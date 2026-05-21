@@ -21,7 +21,7 @@
 /* Sprite filter — retro only */
 :root[data-theme="retro"] .gb-sprite-filter {
   image-rendering: pixelated;
-  filter: grayscale(1) contrast(1.3) brightness(1.1);
+  filter: grayscale(1);
   mix-blend-mode: multiply;
 }
 

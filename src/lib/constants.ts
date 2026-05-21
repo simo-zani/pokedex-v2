@@ -23,11 +23,37 @@ export function getListSpriteUrl(id: number): string {
   return `${SPRITE_BASE}/${id}.png`;
 }
 
-/** Get retro (Gen I gray) sprite URL. Falls back to default for id > 151 */
+/** Get retro (oldest available) sprite URL. */
 export function getRetroListSpriteUrl(id: number): string {
   if (id <= 151) {
+    // Gen I: red-blue gray
     return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/gray/${id}.png`;
   }
+  if (id <= 251) {
+    // Gen II: gold
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-ii/gold/${id}.png`;
+  }
+  if (id <= 386) {
+    // Gen III: ruby-sapphire
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/ruby-sapphire/${id}.png`;
+  }
+  if (id <= 493) {
+    // Gen IV: diamond-pearl
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iv/diamond-pearl/${id}.png`;
+  }
+  if (id <= 649) {
+    // Gen V: black-white
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/${id}.png`;
+  }
+  if (id <= 721) {
+    // Gen VI: x-y
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-vi/x-y/${id}.png`;
+  }
+  if (id <= 809) {
+    // Gen VII: ultra-sun-ultra-moon
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-vii/ultra-sun-ultra-moon/${id}.png`;
+  }
+  // Gen VIII+ or fallback: standard sprite
   return `${SPRITE_BASE}/${id}.png`;
 }
 
@@ -40,3 +66,52 @@ export const STAT_LABELS: Record<string, string> = {
   "special-defense": "SpDef",
   speed: "Spe",
 };
+
+export type GameVersionKey =
+  | "red-blue"
+  | "yellow"
+  | "gold"
+  | "silver"
+  | "crystal"
+  | "ruby-sapphire"
+  | "emerald"
+  | "fire-red-leaf-green"
+  | "diamond-pearl"
+  | "platinum"
+  | "heart-gold-soul-silver"
+  | "black-white"
+  | "black-2-white-2"
+  | "x-y"
+  | "omegaruby-alphasapphire"
+  | "sun-moon"
+  | "ultra-sun-ultra-moon"
+  | "lets-go-pikachu-lets-go-eevee"
+  | "sword-shield"
+  | "brilliant-diamond-shining-pearl"
+  | "legends-arceus"
+  | "scarlet-violet";
+
+export const GAME_VERSIONS_ORDERED: GameVersionKey[] = [
+  "red-blue",
+  "yellow",
+  "gold",
+  "silver",
+  "crystal",
+  "ruby-sapphire",
+  "emerald",
+  "fire-red-leaf-green",
+  "diamond-pearl",
+  "platinum",
+  "heart-gold-soul-silver",
+  "black-white",
+  "black-2-white-2",
+  "x-y",
+  "omegaruby-alphasapphire",
+  "sun-moon",
+  "ultra-sun-ultra-moon",
+  "lets-go-pikachu-lets-go-eevee",
+  "sword-shield",
+  "brilliant-diamond-shining-pearl",
+  "legends-arceus",
+  "scarlet-violet",
+];

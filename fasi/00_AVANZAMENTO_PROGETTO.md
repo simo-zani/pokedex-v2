@@ -22,21 +22,21 @@
 
 > **Aggiorna qui sotto la fase su cui stiamo lavorando.**
 
-**Fase attiva**: `Fase 4 — Modalità Moderna + Switch`
-**File da aprire**: `04_FASE_4_MODALITA_MODERNA_E_SWITCH.md`
-**Note**: Fasi 1, 2 e 3 completate il 20/05/2026. Progetto su GitHub: https://github.com/simo-zani/pokedex-v2
+**Fase attiva**: `Fase 5 — Sprite System Completo`
+**File da aprire**: `05_FASE_5_SPRITE_SYSTEM.md`
+**Note**: Fasi 1, 2 e 3 completate il 20/05/2026. Fase 4 completata il 20/05/2026. Progetto su GitHub: https://github.com/simo-zani/pokedex-v2
 
 ---
 
 ## ✅ Stato delle Fasi
 
 | # | Fase | File | Stato | Data completamento |
-|---|------|------|-------|-------------------|
+|   |------|------|-------|-------------------|
 | 1 | Fondamenta | `01_FASE_1_FONDAMENTA.md` | ✅ Completata | 20/05/2026 |
 | 2 | Shell e Power | `02_FASE_2_SHELL_E_POWER.md` | ✅ Completata | 20/05/2026 |
 | 3 | Modalità Retro | `03_FASE_3_MODALITA_RETRO.md` | ✅ Completata | 20/05/2026 |
-| 4 | Modalità Moderna + Switch | `04_FASE_4_MODALITA_MODERNA_E_SWITCH.md` | 🔲 Da fare | — |
-| 5 | Sprite System Completo | `05_FASE_5_SPRITE_SYSTEM.md` | 🔲 Da fare | — |
+| 4 | Modalità Moderna + Switch | `04_FASE_4_MODALITA_MODERNA_E_SWITCH.md` | ✅ Completata | 20/05/2026 |
+| 5 | Sprite System Completo | `05_FASE_5_SPRITE_SYSTEM.md` | 🟡 In corso | — |
 | 6 | Contenuti Dettaglio | `06_FASE_6_CONTENUTI_DETTAGLIO.md` | 🔲 Da fare | — |
 | 7 | Audio e Polish | `07_FASE_7_AUDIO_E_POLISH.md` | 🔲 Da fare | — |
 | 8 | Extra (opzionali) | `08_FASE_8_EXTRA.md` | 🔲 Da fare | — |
@@ -61,6 +61,7 @@
 - **20/05/2026**: Fase 2 completata — scocca rossa Pokédex fullscreen su mobile (100dvh), LED blu con glow, PowerButton con animazione boot/shutdown stile Game Boy, ButtonBar con prev/next funzionanti + keyboard arrows, HOME funzionante, MODE/GEN/FAV placeholder
 - **20/05/2026**: Fase 3 completata — aggiunta tavolozza monocromatica Game Boy (CSS variables + config Tailwind), impostato font pixelato "Press Start 2P", caricamento e filtraggio sprite retro (Gen I gray per <=151, filtro CSS verde per >151), aggiunte scanlines ed effetto glow allo schermo, scocca Pokédex modificata in grigio (#8B8B8B), LED rosso e pulsanti squadrati a scatto, create visualizzazioni retro per statistiche e tipi.
 - **20/05/2026**: Repo GitHub: https://github.com/simo-zani/pokedex-v2
+- **20/05/2026**: Fase 5 iniziata — create utility sprites (`src/lib/sprites.ts`), costanti ordine giochi in `constants.ts`, componente SpriteViewer con front+back affiancati, shiny toggle (3 stelline), gender toggle, selettore gioco (solo moderna). Retro: sprite per generazione (come lista). Moderna: default Official Artwork.
 
 ---
 

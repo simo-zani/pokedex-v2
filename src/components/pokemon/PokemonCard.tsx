@@ -40,8 +40,8 @@ export default function PokemonCard({ pokemon }: PokemonCardProps) {
     <motion.button
       onClick={() => navigate(`/pokemon/${pokemon.id}`)}
       className="flex flex-col items-center justify-center p-1 bg-transparent cursor-pointer aspect-square w-full rounded-xl"
-      whileHover={{ scale: 1.06, backgroundColor: "rgba(0,0,0,0.04)" }}
-      whileTap={{ scale: 0.94 }}
+      whileHover={{ backgroundColor: "rgba(0,0,0,0.04)" }}
+      whileTap={{ scale: 0.96 }}
       transition={{ type: "spring", stiffness: 400, damping: 20 }}
     >
       <img

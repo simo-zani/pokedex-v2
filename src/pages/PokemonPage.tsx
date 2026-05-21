@@ -5,7 +5,7 @@ import { useTheme } from "../hooks/useTheme";
 import { formatPokemonNumber, STAT_LABELS, POKEMON_LIST_LIMIT } from "../lib/constants";
 import LoadingScreen from "../components/common/LoadingScreen";
 import ErrorMessage from "../components/common/ErrorMessage";
-import SpriteImage from "../components/common/SpriteImage";
+import SpriteViewer from "../components/pokemon/SpriteViewer";
 
 /* Pokémon type → Tailwind bg class for badges */
 const TYPE_COLORS: Record<string, string> = {
@@ -68,21 +68,31 @@ export default function PokemonPage() {
   const englishName =
     species?.names.find((n) => n.language.name === "en")?.name ?? pokemon.name;
 
-  // Tinted background for modern mode based on primary type
+  // Tinted background for modern mode based on types
   const primaryType = pokemon.types[0]?.type.name ?? "normal";
-  const typeHex = TYPE_HEX[primaryType] ?? "#9ca3af";
+  const secondaryType = pokemon.types[1]?.type.name;
+  const color1 = TYPE_HEX[primaryType] ?? "#9ca3af";
+  const color2 = secondaryType ? (TYPE_HEX[secondaryType] ?? "#9ca3af") : null;
+
   const modernBg = isRetro
     ? undefined
-    : { background: `linear-gradient(135deg, ${typeHex}22 0%, #ffffff 55%)` };
+    : color2
+    ? {
+        background: `radial-gradient(circle at 0% 0%, ${color1}55 0%, transparent 60%), radial-gradient(circle at 100% 0%, ${color2}55 0%, transparent 60%), #f9fafb`,
+      }
+    : {
+        background: `radial-gradient(circle at 0% 0%, ${color1}77 0%, transparent 70%), #f9fafb`,
+      };
 
   return (
     <div
-      className={`px-4 py-4 min-h-full transition-colors duration-500 ${
+      className={`relative overflow-hidden px-4 py-4 min-h-full transition-colors duration-500 ${
         isRetro ? "bg-gb-bg" : ""
       }`}
       style={modernBg}
     >
-      {/* Header */}
+      <div className="relative z-10">
+        {/* Header */}
       <div className="relative text-center flex items-center justify-center">
         <button
           onClick={() => navigate("/")}
@@ -113,17 +123,8 @@ export default function PokemonPage() {
       </div>
 
       {/* Sprite */}
-      <div className={`flex justify-center my-4 mx-auto ${
-        isRetro ? "p-2 w-32 h-32" : "p-4 w-44 h-44"
-      }`}>
-        <SpriteImage
-          pokemonId={pokemon.id}
-          sprites={pokemon.sprites}
-          alt={englishName}
-          width={isRetro ? 96 : 160}
-          height={isRetro ? 96 : 160}
-          className="w-full h-full object-contain drop-shadow-md"
-        />
+      <div className="flex justify-center my-4 mx-auto">
+        <SpriteViewer pokemon={pokemon} />
       </div>
 
       {/* Types */}
@@ -198,6 +199,7 @@ export default function PokemonPage() {
             );
           })}
         </div>
+      </div>
       </div>
     </div>
   );

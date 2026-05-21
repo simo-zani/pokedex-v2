@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useTheme } from "../../hooks/useTheme";
 
 interface SpriteImageProps {
-  pokemonId: number;
   sprites: any;
   alt: string;
   className?: string;
@@ -11,7 +10,6 @@ interface SpriteImageProps {
 }
 
 export default function SpriteImage({
-  pokemonId,
   sprites,
   alt,
   className = "",
@@ -19,17 +17,48 @@ export default function SpriteImage({
   height,
 }: SpriteImageProps) {
   const [errorCount, setErrorCount] = useState(0);
+  const [loaded, setLoaded] = useState(false);
   const { isRetro } = useTheme();
 
   // Build ordered list of candidate URLs
   const candidates: string[] = [];
 
-  if (isRetro && pokemonId <= 151) {
-    // Retro Gen I: gray sprite first, then default
-    const gray = sprites?.versions?.["generation-i"]?.["red-blue"]?.front_gray;
-    if (gray) candidates.push(gray);
-    if (sprites?.front_default) candidates.push(sprites.front_default);
-  } else if (!isRetro) {
+  if (isRetro) {
+    // Retro: Traverse generations from oldest to newest to find the oldest available sprite
+    const retroGenerations = [
+      { gen: "generation-i", games: ["red-blue", "yellow"], fields: ["front_gray", "front_default"] },
+      { gen: "generation-ii", games: ["gold", "silver", "crystal"], fields: ["front_default"] },
+      { gen: "generation-iii", games: ["ruby-sapphire", "emerald", "firered-leafgreen"], fields: ["front_default"] },
+      { gen: "generation-iv", games: ["diamond-pearl", "platinum", "heartgold-soulsilver"], fields: ["front_default"] },
+      { gen: "generation-v", games: ["black-white"], fields: ["front_default"] },
+      { gen: "generation-vi", games: ["x-y", "omegaruby-alphasapphire"], fields: ["front_default"] },
+      { gen: "generation-vii", games: ["ultra-sun-ultra-moon"], fields: ["front_default"] },
+      { gen: "generation-viii", games: ["sword-shield"], fields: ["front_default"] }
+    ];
+
+    let found = false;
+    for (const g of retroGenerations) {
+      const genData = sprites?.versions?.[g.gen];
+      if (!genData) continue;
+      for (const game of g.games) {
+        const gameData = genData[game];
+        if (!gameData) continue;
+        for (const field of g.fields) {
+          const url = gameData[field];
+          if (url) {
+            candidates.push(url);
+            found = true;
+          }
+        }
+      }
+      if (found) break;
+    }
+
+    // Always append top-level front_default as a fallback
+    if (sprites?.front_default) {
+      candidates.push(sprites.front_default);
+    }
+  } else {
     // Modern: official artwork HD → showdown animated → home → default
     const artwork = sprites?.other?.["official-artwork"]?.front_default;
     const showdown = sprites?.other?.showdown?.front_default;
@@ -37,9 +66,6 @@ export default function SpriteImage({
     if (artwork) candidates.push(artwork);
     if (showdown) candidates.push(showdown);
     if (home) candidates.push(home);
-    if (sprites?.front_default) candidates.push(sprites.front_default);
-  } else {
-    // Retro > 151: just default
     if (sprites?.front_default) candidates.push(sprites.front_default);
   }
 
@@ -58,6 +84,15 @@ export default function SpriteImage({
     );
   }
 
+  // Modern: fade-in on load. Retro: instant.
+  const fadeStyle = isRetro
+    ? undefined
+    : {
+        imageRendering: "auto" as const,
+        opacity: loaded ? 1 : 0,
+        transition: "opacity 300ms ease-in",
+      };
+
   return (
     <img
       src={src}
@@ -65,9 +100,13 @@ export default function SpriteImage({
       width={width}
       height={height}
       loading="lazy"
-      onError={() => setErrorCount((c) => c + 1)}
+      onLoad={() => setLoaded(true)}
+      onError={() => {
+        setLoaded(false);
+        setErrorCount((c) => c + 1);
+      }}
       className={`${isRetro ? "gb-sprite-filter" : ""} ${className}`}
-      style={isRetro ? undefined : { imageRendering: "auto" }}
+      style={fadeStyle}
     />
   );
 }
