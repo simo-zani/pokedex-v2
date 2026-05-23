@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { usePokemon, usePokemonSpecies } from "../hooks/usePokemon";
 import { useTheme } from "../hooks/useTheme";
 import { useLanguage, getLocalizedName, LANGUAGES, type LanguageCode } from "../hooks/useLanguage";
-import { formatPokemonNumber, POKEMON_LIST_LIMIT } from "../lib/constants";
+import { formatPokemonNumber, POKEMON_LIST_LIMIT, extractIdFromUrl } from "../lib/constants";
 import LoadingScreen from "../components/common/LoadingScreen";
 import ErrorMessage from "../components/common/ErrorMessage";
 import SpriteViewer from "../components/pokemon/SpriteViewer";
@@ -11,6 +11,9 @@ import StatsPanel from "../components/pokemon/StatsPanel";
 import EvolutionChain from "../components/pokemon/EvolutionChain";
 import FlavorTextPopup, { getFlavorTextEntry } from "../components/pokemon/FlavorText";
 import { useEvolutionChain } from "../hooks/useEvolutionChain";
+import { usePokemonForms, useDefaultFormPokemon } from "../hooks/usePokemonForms";
+import AlternativeForms from "../components/pokemon/AlternativeForms";
+import { isAltForm, getFormInfo, isCostumeForm } from "../lib/forms";
 import { getAvailableGames, getDefaultRetroGame, getSpriteUrl, hasGenderForGame, type GameVersion } from "../lib/sprites";
 
 /* Pokémon type → Tailwind bg class for badges */
@@ -45,6 +48,20 @@ export default function PokemonPage() {
   const [flavorOpen, setFlavorOpen] = useState(false);
   const [shiny, setShiny] = useState(false);
   const [gender, setGender] = useState<"male" | "female">("male");
+  const [backBtnStyle, setBackBtnStyle] = useState<React.CSSProperties>({ position: "fixed", visibility: "hidden" });
+
+  useEffect(() => {
+    const container = document.getElementById("screen-scroll-container");
+    if (!container) return;
+    const update = () => {
+      const r = container.getBoundingClientRect();
+      setBackBtnStyle({ position: "fixed", left: r.left + 16, top: r.top + 16 });
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, []);
 
   const {
     data: pokemon,
@@ -52,11 +69,14 @@ export default function PokemonPage() {
     isError: errorPokemon,
   } = usePokemon(id ?? "");
 
+  // For alternate forms (e.g. Mega Charizard X ID 10034), species/{id} returns 404.
+  // Derive the base species ID from the pokemon's species field.
+  const speciesId = pokemon?.species?.url ? extractIdFromUrl(pokemon.species.url).toString() : null;
   const {
     data: species,
     isLoading: loadingSpecies,
     isError: errorSpecies,
-  } = usePokemonSpecies(id ?? "");
+  } = usePokemonSpecies(speciesId ?? "");
 
   const { data: evolutionData } = useEvolutionChain(species?.evolution_chain?.url);
 
@@ -99,11 +119,28 @@ export default function PokemonPage() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [numId, navigate]);
 
-  if (loadingPokemon || loadingSpecies) return <LoadingScreen />;
-  if (errorPokemon || errorSpecies || !pokemon)
+  // Fetch alternate forms and default form data (must be before early returns for Rules of Hooks)
+  const baseItalianName = species && pokemon ? getLocalizedName(species, language) ?? pokemon.name : "";
+  const { forms, isLoading: formsLoading } = usePokemonForms(species, baseItalianName);
+  const { data: defaultFormPokemon } = useDefaultFormPokemon(species, pokemon?.name);
+
+  // Need species to be present; might still be loading if speciesId changed after pokemon resolved
+  if (loadingPokemon || loadingSpecies || (!species && pokemon))
+    return <LoadingScreen />;
+  if (errorPokemon || errorSpecies || !pokemon || !species)
     return <ErrorMessage message="Errore caricamento Pokémon." />;
 
-  const displayName = getLocalizedName(species, language) ?? pokemon.name;
+  // Determine if current pokemon is the default form or an alternate form
+  const isDefaultForm = !isAltForm(pokemon.name, species.varieties);
+  const displayName = isDefaultForm
+    ? baseItalianName
+    : getFormInfo(pokemon.name, species.name, baseItalianName).title;
+
+  // Exclude the current form from the forms list (avoid duplicates)
+  const filteredForms = forms.filter(f => f.pokemon.id !== pokemon.id && !isCostumeForm(f.pokemon.name));
+  // Show base form only when viewing an alt form and the Pokémon has no evolution chain
+  const hasEvoChain = !!evolutionData && evolutionData.chain.evolves_to.length > 0;
+  const showBaseForm = !isDefaultForm && !hasEvoChain;
 
   // Tinted background for modern mode based on types
   const primaryType = pokemon.types[0]?.type.name ?? "normal";
@@ -123,27 +160,28 @@ export default function PokemonPage() {
 
   return (
     <div
-      className={`relative overflow-hidden px-4 py-4 min-h-full transition-colors duration-500 ${
+      className={`relative px-4 py-4 min-h-full transition-colors duration-500 ${
         isRetro ? "bg-gb-bg" : ""
       }`}
       style={modernBg}
     >
       <div className="relative z-10">
+        <button
+          onClick={() => navigate("/")}
+          className={`fixed z-50 p-1.5 rounded-full transition-colors ${
+            isRetro
+              ? "text-gb-darkest hover:bg-gb-light"
+              : "text-gray-600 hover:bg-white/60"
+          }`}
+          style={backBtnStyle}
+          title="Torna alla lista"
+        >
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
         {/* Header */}
-        <div className="relative text-center flex items-center justify-center min-h-[48px]">
-          <button
-            onClick={() => navigate("/")}
-            className={`absolute left-0 p-1.5 rounded-full transition-colors ${
-              isRetro
-                ? "text-gb-darkest hover:bg-gb-light"
-                : "text-gray-600 hover:bg-white/60"
-            }`}
-            title="Torna alla lista"
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
+        <div className="text-center flex items-center justify-center min-h-[48px]">
           <div>
             <p className={isRetro
               ? "text-[8px] text-gb-dark font-retro"
@@ -373,9 +411,27 @@ export default function PokemonPage() {
         <span>{isRetro ? "WT" : "Weight"}: {(pokemon.weight / 10).toFixed(1)}kg</span>
       </div>
 
-      {/* Evolution Chain */}
-      {evolutionData && evolutionData.chain.evolves_to.length > 0 && (
+      {/* Alternative Forms (excluding the current form) */}
+      {(filteredForms.length > 0 || (showBaseForm && defaultFormPokemon)) && (
+        <AlternativeForms
+          forms={filteredForms}
+          isLoading={formsLoading}
+          isDefaultForm={isDefaultForm}
+          baseFormPokemon={showBaseForm ? defaultFormPokemon : null}
+          baseFormSpecies={showBaseForm ? species : null}
+        />
+      )}
+
+      {/* Evolution Chain — only for the default form */}
+      {isDefaultForm && evolutionData && evolutionData.chain.evolves_to.length > 0 && (
         <EvolutionChain data={evolutionData} isRetro={isRetro} />
+      )}
+
+      {/* When viewing an alternate form, show the evolution chain of the base form */}
+      {!isDefaultForm && evolutionData && evolutionData.chain.evolves_to.length > 0 && (
+        <div className="mt-2">
+          <EvolutionChain data={evolutionData} isRetro={isRetro} />
+        </div>
       )}
 
       {/* Stats */}

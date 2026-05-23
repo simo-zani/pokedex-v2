@@ -224,6 +224,7 @@ export interface Pokemon {
   sprites: PokemonSprites;
   height: number;
   weight: number;
+  species: { name: string; url: string };
 }
 
 // === Species endpoint types ===
@@ -245,6 +246,7 @@ export interface PokemonSpecies {
   names: PokemonSpeciesName[];
   flavor_text_entries: FlavorTextEntry[];
   evolution_chain: { url: string };
+  varieties: { is_default: boolean; pokemon: { name: string; url: string } }[];
 }
 
 // === Evolution chain types ===

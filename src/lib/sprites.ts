@@ -293,12 +293,7 @@ export function getAvailableGames(pokemon: Pokemon, mode: "retro" | "modern"): G
     { key: "scarlet-violet", gen: "generation-ix", gameKey: "scarlet-violet", label: GAME_VERSION_LABELS["scarlet-violet"] },
   ];
 
-  const pokemonGen = getPokemonGeneration(pokemon.id);
-
   for (const { key, gen, gameKey, label } of gameVersionMap) {
-    const gameGen = GAME_VERSION_GENERATION[key];
-    if (gameGen > 0 && gameGen < pokemonGen) continue;
-
     const genData = versions?.[gen] as any;
     const gameData = genData?.[gameKey];
 

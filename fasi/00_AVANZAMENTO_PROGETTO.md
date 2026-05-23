@@ -12,20 +12,6 @@
 **Hosting**: Vercel (statico, free tier)
 **Repo**: GitHub
 **Pokémon totali**: ~1025 (tutte le generazioni)
-# 📊 Avanzamento Progetto Pokédex Webapp
-
-> **Istruzioni per Claude**: leggi PRIMA questo file per capire a che fase sono arrivato, POI apri il file della fase corrispondente (`01_FASE_1_FONDAMENTA.md`, `02_FASE_2_SHELL_E_POWER.md`, ecc.) e lavora SOLO su quella fase. Quando completiamo una fase, aggiorna lo stato qui sotto da `🔲 Da fare` a `✅ Completata` e indica la data.
-
----
-
-## 🎯 Riepilogo Progetto
-
-**Nome**: Pokédex Webapp (v3)
-**Stack**: Vite + React 18 + TypeScript + Tailwind + React Router + TanStack Query + Framer Motion
-**Fonte dati**: PokéAPI (https://pokeapi.co/api/v2/)
-**Hosting**: Vercel (statico, free tier)
-**Repo**: GitHub
-**Pokémon totali**: ~1025 (tutte le generazioni)
 **Modalità visive**: Retro (Game Boy) + Moderna
 
 📄 **Spec completa di riferimento**: `POKEDEX_WEBAPP_SPEC.md`
@@ -36,10 +22,10 @@
 
 > **Aggiorna qui sotto la fase su cui stiamo lavorando.**
 
-**Fase attiva**: `Fase 6 — Contenuti Dettaglio`
-**File da aprire**: `06_FASE_6_CONTENUTI_DETTAGLIO.md`
-**Note**: Fasi 1, 2, 3 e 4 completate il 20/05/2026. Fase 5 completata il 21/05/2026. Progetto su GitHub: https://github.com/simo-zani/pokedex-v2
-**Prossimo step**: Punto 5 della Fase 6 (Forme Alternative), poi Fase 7 e resto.
+**Fase attiva**: `Fase 7 — Audio e Polish`
+**File da aprire**: `07_FASE_7_AUDIO_E_POLISH.md`
+**Note**: Fasi 1, 2, 3 e 4 completate il 20/05/2026. Fase 5 completata il 21/05/2026. Fase 6 completata il 23/05/2026. Progetto su GitHub: https://github.com/simo-zani/pokedex-v2
+**Prossimo step**: Iniziare la Fase 7.
 
 ---
 
@@ -52,15 +38,12 @@
 | 3 | Modalità Retro | `03_FASE_3_MODALITA_RETRO.md` | ✅ Completata | 20/05/2026 |
 | 4 | Modalità Moderna + Switch | `04_FASE_4_MODALITA_MODERNA_E_SWITCH.md` | ✅ Completata | 20/05/2026 |
 | 5 | Sprite System Completo | `05_FASE_5_SPRITE_SYSTEM.md` | ✅ Completata | 21/05/2026 |
-| 6 | Contenuti Dettaglio | `06_FASE_6_CONTENUTI_DETTAGLIO.md` | 🟡 In corso | — |
+| 6 | Contenuti Dettaglio | `06_FASE_6_CONTENUTI_DETTAGLIO.md` | ✅ Completata | 23/05/2026 |
 | 7 | Audio e Polish | `07_FASE_7_AUDIO_E_POLISH.md` | 🔲 Da fare | — |
 | 8 | Extra (opzionali) | `08_FASE_8_EXTRA.md` | 🔲 Da fare | — |
 | 9 | Deploy finale e QA | `09_FASE_9_DEPLOY_E_QA.md` | 🔲 Da fare | — |
-- 🔲 Da fare
-- 🟡 In corso
-- ✅ Completata
-- ⏸️ In pausa
-- ⏭️ Saltata (opzionale)
+
+Legenda: 🔲 Da fare · 🟡 In corso · ✅ Completata · ⏸️ In pausa · ⏭️ Saltata (opzionale)
 
 ---
 
@@ -75,7 +58,8 @@
 - **20/05/2026**: Fase 3 completata — aggiunta tavolozza monocromatica Game Boy (CSS variables + config Tailwind), impostato font pixelato "Press Start 2P", caricamento e filtraggio sprite retro (Gen I gray per <=151, filtro CSS verde per >151), aggiunte scanlines ed effetto glow allo schermo, scocca Pokédex modificata in grigio (#8B8B8B), LED rosso e pulsanti squadrati a scatto, create visualizzazioni retro per statistiche e tipi.
 - **20/05/2026**: Repo GitHub: https://github.com/simo-zani/pokedex-v2
 - **20/05/2026**: Fase 5 iniziata — create utility sprites (`src/lib/sprites.ts`), costanti ordine giochi in `constants.ts`, componente SpriteViewer con front+back affiancati, shiny toggle (3 stelline), gender toggle, selettore gioco (solo moderna). Retro: sprite per generazione (come lista). Moderna: default Official Artwork.
-- **21/05/2026**: Fase 6 — Completati punti 1 (lingue), 2 (stats), 3 (catena evolutiva), 6 (flavor text). Unificata colonna destra controlli (gameboy, flag, info, shiny, gender) con stato sollevato in PokemonPage. Tutti i pulsanti a 25×25px. Retro mode: cerchi rimossi da lingua e info, sprite catena evolutiva con filtro verde dedicato (`.gb-evo-filter`). Nomi oggetti evoluzione in italiano (Pietratuono, ecc.). Spessore tracce uniformato a 1.5px. Build funzionante. **Mancante**: punto 5 — Forme Alternative (Mega, Gmax, regionali).
+- **21/05/2026**: Fase 6 (parte 1) — Completati punti 1 (lingue), 2 (stats), 3 (catena evolutiva), 6 (flavor text). Unificata colonna destra controlli (gameboy, flag, info, shiny, gender) con stato sollevato in PokemonPage. Tutti i pulsanti a 25×25px. Retro mode: cerchi rimossi da lingua e info, sprite catena evolutiva con filtro verde dedicato (`.gb-evo-filter`). Nomi oggetti evoluzione in italiano (Pietratuono, ecc.). Spessore tracce uniformato a 1.5px. **Mancante**: punto 5 — Forme Alternative (Mega, Gmax, regionali).
+- **23/05/2026**: Fase 6 (parte 2) — Punto 4 (pulsante back fisso con ResizeObserver), punto 5 (Forme Alternative). Aggiunte utility `src/lib/forms.ts` (classificazione forme Mega/Gmax/speciali con label italiane, `isAltForm`, `isCostumeForm`). Hook `usePokemonForms` e `useDefaultFormPokemon`. Componente `AlternativeForms` con sprite retro/moderni. Fix white screen (hooks prima degli early return). Fix sprite forme alternative (generation filter rimosso da `getAvailableGames`). Fix back button `sticky`→`fixed`. Filtro forme costume per Pikachu. Build pass.
 
 ---
 

@@ -67,6 +67,31 @@ export const STAT_LABELS: Record<string, string> = {
   speed: "Spe",
 };
 
+/** Generation labels in Italian */
+export const GENERATION_LABELS: Record<number, string> = {
+  1: "I GENERAZIONE",
+  2: "II GENERAZIONE",
+  3: "III GENERAZIONE",
+  4: "IV GENERAZIONE",
+  5: "V GENERAZIONE",
+  6: "VI GENERAZIONE",
+  7: "VII GENERAZIONE",
+  8: "VIII GENERAZIONE",
+  9: "IX GENERAZIONE",
+};
+
+export const GENERATION_NAMES: Record<number, string> = {
+  1: "Prima generazione",
+  2: "Seconda generazione",
+  3: "Terza generazione",
+  4: "Quarta generazione",
+  5: "Quinta generazione",
+  6: "Sesta generazione",
+  7: "Settima generazione",
+  8: "Ottava generazione",
+  9: "Nona generazione",
+};
+
 export type GameVersionKey =
   | "red-blue"
   | "yellow"

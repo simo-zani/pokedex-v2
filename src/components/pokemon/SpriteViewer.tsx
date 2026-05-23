@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import type { Pokemon } from "../../lib/types";
 import { useTheme } from "../../hooks/useTheme";
 import { getSpriteUrl, type GameVersion } from "../../lib/sprites";
@@ -108,16 +108,36 @@ export default function SpriteViewer({ pokemon, gameVersion, shiny, gender }: Sp
   const frontUrl = getSpriteUrl(pokemon, { view: "front", shiny, gender, gameVersion });
   const backUrl = getSpriteUrl(pokemon, { view: "back", shiny, gender, gameVersion });
   const isOldSprite = !isRetro && OLD_GAMES.includes(gameVersion);
+  const defaultFallbackUrl = getSpriteUrl(pokemon, { view: "front", shiny, gender, gameVersion: "default" });
+  const [frontFallback, setFrontFallback] = useState<string | null>(null);
+  const [backFallback, setBackFallback] = useState<string | null>(null);
+
+  // Reset fallback when gameVersion changes
+  useEffect(() => { setFrontFallback(null); setBackFallback(null); }, [gameVersion]);
+
+  const onFrontError = useCallback(() => {
+    if (!frontFallback && defaultFallbackUrl && defaultFallbackUrl !== frontUrl) {
+      setFrontFallback(defaultFallbackUrl);
+    }
+  }, [frontFallback, defaultFallbackUrl, frontUrl]);
+
+  const onBackError = useCallback(() => {
+    if (!backFallback && defaultFallbackUrl && defaultFallbackUrl !== backUrl) {
+      setBackFallback(defaultFallbackUrl);
+    }
+  }, [backFallback, defaultFallbackUrl, backUrl]);
+
+  const frontSrc = frontFallback ?? frontUrl;
 
   return (
     <div className="relative w-full flex items-center justify-center min-h-[170px] py-1">
       {/* Centered Sprites Wrapper */}
       <div className={`relative flex gap-4 items-center justify-center ${isRetro ? "bg-gb-bg p-2" : ""}`}>
-        {frontUrl && (
+        {frontSrc && (
           <div className="relative inline-block">
             {isOldSprite ? (
               <TransparentSprite
-                src={frontUrl}
+                src={frontSrc}
                 alt={`${pokemon.name}`}
                 className="object-contain select-none"
                 width={isRetro ? 128 : 160}
@@ -125,8 +145,9 @@ export default function SpriteViewer({ pokemon, gameVersion, shiny, gender }: Sp
               />
             ) : (
               <img
-                src={frontUrl}
+                src={frontSrc}
                 alt={`${pokemon.name}`}
+                onError={onFrontError}
                 className={`object-contain select-none ${isRetro ? "gb-sprite-filter" : "drop-shadow-md"}`}
                 width={isRetro ? 128 : 160}
                 height={isRetro ? 128 : 160}
@@ -148,6 +169,7 @@ export default function SpriteViewer({ pokemon, gameVersion, shiny, gender }: Sp
               <img
                 src={backUrl}
                 alt={`${pokemon.name}`}
+                onError={onBackError}
                 className={`object-contain select-none ${isRetro ? "gb-sprite-filter" : "drop-shadow-md"}`}
                 width={isRetro ? 128 : 160}
                 height={isRetro ? 128 : 160}

@@ -9,7 +9,7 @@ export default function SearchBar({ value, onChange }: SearchBarProps) {
   const { isRetro } = useTheme();
 
   return (
-    <div className={`sticky top-0 z-10 px-4 py-3 transition-colors duration-500 ${
+    <div className={`px-4 py-3 transition-colors duration-500 ${
       isRetro ? "bg-gb-bg" : "bg-white"
     }`}>
       <input
